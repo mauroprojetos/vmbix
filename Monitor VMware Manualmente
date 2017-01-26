@@ -1,0 +1,35 @@
+Olá amigos, 
+
+eu descobri uma maneira de monitorar o agente zimbra de VMs encontrados por descobrir vmware. 
+
+Siga os passos abaixo: 
+
+- Definir como recomendado descobrir 
+- Instalar os agentes em computadores configurados para escutar na porta 10051, mas não começar ainda. 
+
+- No host principal VMware ou Vcenter no zabbix, adicione todas as VMs IP e DNS e porta. 
+
+Ex: 172.16.1.6 vm01.domain.com 10051 
+
+
+- Associar o "agente zabbix template app" Template no modelo de "template Virt VMware convidado" 
+
+
+Para o zabbix encontrar o agente, faça o seguinte. 
+
+
+1 - Definir o agente padrão para o IP da máquina virtual que você deseja monitorar "é só clicar o host VMware e ali é onde você configurar o agente e escolher o agente padrão" 
+
+2 - Suprimir o VM que deseja monitorar na lista descoberta automaticamente 
+
+3 - Espere até que seja gravado novamente. 
+
+4 - Certifique-se de que o agente de IP é que ele encheu o ip que "quando estiver offline dar para verificar o ip passando o mouse sobre" 
+
+5 - Se o IP está correto, basta iniciar o agente que VM e deixar como automática 
+
+
+Para Configure outro VMS, siga a etapa 1-5 para cada VM que você deseja definir. 
+
+
+Boa sorte a todos.
