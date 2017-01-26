@@ -1,22 +1,23 @@
 # VmBix [![Build Status](https://travis-ci.org/dav3860/vmbix.svg?branch=master)](https://travis-ci.org/dav3860/vmbix)
 
-VmBix is a multi-threaded TCP proxy for the VMWare Sphere API written in Java. It accepts connections from a [Zabbix](http://www.zabbix.com/) server/proxy/agent or the zabbix_get binary and translates them to VMWare API calls.
+VmBix é um proxy TCP multi-threaded para o VMWare Sphere API escrito em Java. Ele aceita conexões de um Zabbix servidor / proxy / agente ou o binário zabbix_get e traduz-los para chamadas de API VMware.
 
-Starting from version 2.2, Zabbix can natively monitor a VMWare environment. But there are a few drawbacks :
-* The monitored items are not all very relevant
-* This is not easily extensible
-* The created ESX and VM hosts are mostly read-only. You cannot attach them different templates, put them into different groups, or use a Zabbix agent to monitor their OS or apps
+A partir da versão 2.2, o Zabbix pode monitorar nativamente um ambiente VMWare. Mas há algumas desvantagens:
 
-VmBix helps you to overcome these limitations, with very good performance. It is multi-threaded, implements objects caching, and can be queried using a Zabbix [loadable module](https://www.zabbix.com/documentation/3.0/manual/config/items/loadablemodules).
+Os itens monitorados não são todos muito relevantes
+Isso não é facilmente extensível
+Os hosts ESX e VM criados são na sua maioria somente de leitura. Não é possível anexá-los a modelos diferentes, colocá-los em grupos diferentes ou usar um agente Zabbix para monitorar seus sistemas operacionais ou aplicativos
+VmBix ajuda você a superar essas limitações, com um desempenho muito bom. É multi-threaded, implementa objetos de cache, e pode ser consultado usando um Zabbix módulo carregável .
 
-VmBix comes with a set of templates adding several monitored items, triggers and graphs in Zabbix. Here are a few screenshots of what you can expect in Zabbix :
+VmBix vem com um conjunto de modelos adicionando vários itens monitorados, gatilhos e gráficos no Zabbix. Aqui estão alguns screenshots do que você pode esperar em Zabbix: 
 ![](https://github.com/dav3860/vmbix/blob/master/screenshots/latest_data.png)
 
 ![](https://github.com/dav3860/vmbix/blob/master/screenshots/triggers.png)
 
 ![](https://github.com/dav3860/vmbix/blob/master/screenshots/graph.png)
 
-You can use VmBix methods to query interesting VMWare metrics, for example :
+Você pode usar métodos VmBix para consultar métricas interessantes de VMWare, por exemplo:
+
 
 ```
 esx.counter[esx01.domain.local,cpu.ready.summation]
@@ -57,15 +58,15 @@ vm.counter[VM01,virtualDisk.totalReadLatency.average,scsi2:4,300]
 2
 ```
 
-## Installation
-Get the latest version of the server [here](https://bintray.com/dav3860/generic/vmbix/view/files). RPM & DEB packages are provided.
+## Instalação
+Obter a versão mais recente do servidor aqui . RPM & DEB pacotes são fornecidos.
 
-You will also need the Zabbix [loadable module](https://www.zabbix.com/documentation/3.0/manual/config/items/loadablemodules) corresponding to your zabbix version. See https://github.com/dav3860/vmbix_zabbix_module for installation details.
+Você também vai precisar do Zabbix módulo carregável correspondente à sua versão zabbix. Veja https://github.com/dav3860/vmbix_zabbix_module para detalhes de instalação.
 
-The VmBix server can be installed on the same machine as a Zabbix server or proxy. The loadable module must be installed on the Zabbix machine that will monitor the VMWare environment.
+O servidor VmBix pode ser instalado na mesma máquina que um servidor ou proxy Zabbix. O módulo carregável deve ser instalado na máquina Zabbix que monitorará o ambiente VMWare.
 
 ## Or build from source
-Note: you will need to install JDK and Maven to compile VmBix.
+Nota: você precisará instalar o JDK eo Maven para compilar VmBix.
 * Install Maven
 
 Follow the instructions on [this](https://maven.apache.org/install.html) page to install Maven.
@@ -78,7 +79,7 @@ mvn package
 
 See the instructions [here](https://github.com/dav3860/vmbix_zabbix_module) to compile the loadable module.
 
-## Quick start
+## Inicio rápido
 
 Note: to run VmBix you'll have to install a JRE (OpenJDK should suite but not tested). All the scripts are tested on Centos 7 but should work on other \*NIX distributions as well.
 
@@ -96,7 +97,7 @@ vmbix [-c|--config] config_file  [-f|--pid pidfile] [-i|--interval interval] [-U
 
 ### Configure the daemon
 
-It is strongly recommended to check your parameters before writing them down to a config file. Run VmBix with your username, password and service url. *It is recommended to use a read-only user to connect to the vCenter.*
+É altamente recomendável verificar os parâmetros antes de os escrever num ficheiro de configuração. Execute VmBix com seu nome de usuário, senha e URL de serviço. É recomendável usar um usuário somente leitura para se conectar ao vCenter.
 
 ```
 $ vmbix -P 12050 -u "MYDOMAIN\\myvmwareuser" -p "mypassword"" -s "https://myvcenter.mydomain.local/sdk"
@@ -107,9 +108,9 @@ log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more in
 17:39:08.433 [main] INFO net.dav3860.VmBix - server started
 
 ```
-You should see a similar ouput. Once you have validated that you can start VmBix, you can edit the configuration file /etc/vmbix/vmbix.conf and run the daemon. You can still run the process in foreground for real-time troubleshooting if necessary.
+Você deve ver uma saída semelhante. Depois de validar que você pode iniciar o VmBix, você pode editar o arquivo de configuração /etc/vmbix/vmbix.conf e executar o daemon. Você ainda pode executar o processo em primeiro plano para solução de problemas em tempo real, se necessário.
 
-To install as a daemon:
+Para instalar como um daemon:
 ```
 chkconfig --add vmbixd
 ```
@@ -126,31 +127,31 @@ For logs, check the file :
 tail -f /var/log/vmbix.log
 ```
 
-### Configure Zabbix
+### Configurar o Zabbix
 
-All the ESX servers, datastores and virtual machines will automatically be discovered and created in Zabbix. See the following instructions to configure Zabbix.
+Todos os servidores ESX, datastores e máquinas virtuais serão automaticamente descobertos e criados no Zabbix. Veja as instruções a seguir para configurar o Zabbix.
 
-#### Import the templates
-Import the templates from [here](https://github.com/dav3860/vmbix/tree/master/zabbix) or from /usr/share/vmbix/zabbix/templates if you installed a package (import the vCenter template after the others). At the moment, only Zabbix 3.0.x templates are provided. The VmBix items in Zabbix are configured with an "Simple Check" type as Zabbix uses a loadable module to talk to VmBix. So it is still possible to use a Zabbix agent in parallel to monitor the hosts. The vmbix.so [loadable module](https://github.com/dav3860/vmbix_zabbix_module) must be installed on your server/proxy.
+#### Importar os modelos
+Importar os modelos a partir daqui ou de / usr / share / vmbix / zabbix / templates Se você instalou um pacote (importar o modelo vCenter depois que os outros). No momento, apenas os modelos Zabbix 3.0.x são fornecidos. Os itens VmBix no Zabbix são configurados com um tipo de "verificação simples", pois o Zabbix usa um módulo carregável para falar com o VmBix. Portanto, ainda é possível usar um agente Zabbix em paralelo para monitorar os hosts. O vmbix.so módulo carregável deve ser instalado no seu servidor / proxy.
 
-#### Discover the objects
-VmBix can discover and create your VMWare environment (hypervisors, VMs, datastores) in too ways :
-- using Zabbix Low-Level Discovery (LLD) and host prototypes
-- using a provided script talking to the Zabbix API to create regular Zabbix hosts (*recommended*)
+#### Descubra os objetos
+VmBix pode descobrir e criar seu ambiente de VMWare (hypervisors, VMs, datastores) em maneiras demais:
+- Usando o Zabbix Low-Level Discovery (LLD) e protótipos de host
+- usando um script fornecido falar com a API Zabbix para criar exércitos regulares Zabbix ( recomendado )
 
-#### Using Zabbix LLD
-Create a host named "VmBix" for example and link it with the VmBix vCenter template. The IP address and port are not used, but it is necessary to make it monitored by the server/proxy running the loadable module.
+#### Usando o Zabbix LLD
+Criar um host chamado "VmBix", por exemplo, e vinculá-lo com o VmBix vCenter modelo. O endereço IP ea porta não são utilizados, mas é necessário fazê-lo monitorado pelo servidor / proxy executando o módulo carregável.
 
-Wait for the ESX servers, datastores and virtual machines to be discovered and created. They will be automatically linked to the VmBix ESX, datastore or VM template. You may need to increase the Timeout parameter in the Zabbix configuration file if VSphere takes too long to respond.
+Aguarde até que os servidores ESX, datastores e máquinas virtuais sejam descobertos e criados. Eles serão automaticamente vinculados ao VmBix ESX, datastore ou modelo VM. Talvez seja necessário aumentar o parâmetro Timeout no arquivo de configuração Zabbix se o VSphere demorar muito para responder.
 
-You can also link additional templates to the created hosts by editing the corresponding host prototype in the VmBix vCenter template discovery rules.
+Você também pode vincular modelos adicionais aos hosts criados editando o protótipo de host correspondente nas regras de descoberta de modelos VmBix vCenter.
 
-As these hosts are created using the host prototype mechanism in Zabbix, they will be almost read-only. For example, you can't edit one host to link it to a specific template. This must be made at the host prototype level, which can be a limitation if your virtual machines are different.
+Como esses hosts são criados usando o mecanismo de protótipo do host no Zabbix, eles serão quase de leitura. Por exemplo, você não pode editar um host para vinculá-lo a um modelo específico. Isso deve ser feito no nível do protótipo do host, o que pode ser uma limitação se suas máquinas virtuais forem diferentes.
 
-#### Using VMWare objects as regular hosts in Zabbix
-To overcome this limitation, you can disable the VM discovery rule in the VmBix vCenter template and create your virtual machines manually in Zabbix. Then, link them to the VmBix VM template (preferably with the loadable module method). You can then edit them as any other host.
+#### Usando objetos VMWare como hosts regulares no Zabbix
+ara superar essa limitação, você pode desativar a regra de descoberta de VM no modelo VmBix vCenter e criar suas máquinas virtuais manualmente no Zabbix. Em seguida, vinculá-los ao modelo VmBix VM (preferencialmente com o método de módulo carregável). Você pode editá-los como qualquer outro host.
 
-Note: if the parameter useuuid is set to *true* in the VmBix configuration file, the objects must be referenced using their VMWare UUID. So if you create a host manually, you must set its name to the UUID and its visible name to the name of the VM. You can use the \*.discovery[\*] methods to get the UUID of an object :
+Nota: se o useuuid parâmetro é definido como verdadeiro no arquivo de configuração VmBix, os objetos devem ser referenciados usando seu UUID VMWare. Portanto, se você criar um host manualmente, você deve definir seu nome para o UUID e seu nome visível para o nome da VM. Você pode usar os métodos * .discovery [*] para obter o UUID de um objeto:
 
 ```
 # zabbix_get -s 127.0.0.1 -p 12050 -k "vm.discovery[*]"
@@ -168,12 +169,12 @@ Note: if the parameter useuuid is set to *true* in the VmBix configuration file,
 }
 ```
 
-As it would be a pain to create all your virtual machines/ESX/datastores manually, a sample import script (vmbix-object-sync) is provided for this purpose. This is the recommended way to discover your environment with VmBix. Check the instructions [here](https://github.com/dav3860/vmbix/tree/master/zabbix/addons) to setup and configure the script.
+Como seria uma dor para criar todas as suas máquinas virtuais / ESX / datastores manualmente, um exemplo de script de importação (vmbix-objeto-sync) é fornecido para esta finalidade. Esta é a maneira recomendada para descobrir seu ambiente com o VmBix. Verifique as instruções aqui para instalar e configurar o script.
 
-If you installed VmBix from a package, the script is located in /usr/share/vmbix/zabbix/addons.
+Se você instalou o VmBix de um pacote, o script está localizado em /usr/share/vmbix/zabbix/addons.
 
-### Querying VmBix in CLI
-You can query VmBix like a Zabbix agent using the zabbix_get tool :
+### Consultando VmBix na CLI
+Você pode consultar VmBix como um agente Zabbix usando a ferramenta zabbix_get:
 ```
 # zabbix_get -s 127.0.0.1 -p 12050 -k about[*]
 VMware vCenter Server 5.1.0 build-1364037
@@ -194,43 +195,43 @@ CentOS 4/5/6 (64 bits)
 }# zabbix_get -s 127.0.0.1 -p 12050 -k vm.counter[MYVM01,virtualDisk.totalReadLatency.average,scsi0:1,300]
 2
 ```
-Again, if useuuid is set to true in the configuration file, objects are identified using their UUID :
+Novamente, se useuuid for definido como true no arquivo de configuração, os objetos serão identificados usando seu UUID:
 ```
 # zabbix_get -s 127.0.0.1 -p 12050 -k vm.guest.os[421448c4-8970-28f0-05a5-90a20724bd08]
 CentOS 4/5/6 (64 bits)
 ```
 
-## Supported Zabbix checks
-There a a complete description of the VmBix supported methods in the [Wiki](https://github.com/dav3860/vmbix/wiki) section.
+## Verificações suportadas do Zabbix
+Há uma descrição completa do VmBix suportado métodos na [Wiki](https://github.com/dav3860/vmbix/wiki) section.
 
 ## Caching
-To disable the cache set CacheTtl variables to 0.
+Para desativar as variáveis CacheTtl do conjunto de cache para 0.
 
-## How to implement your own checks
-1. Find a function called
+## Como implementar seus próprios cheques
+1. Encontrar uma função chamada
 ```
 private void checkAllPatterns                (String string, PrintWriter out  )
 ```
-2. Add your own pattern. For example this string:
+2.Adicione seu próprio teste padrão. Por exemplo, esta seqüência:
 ```
 Pattern pHostCpuUsed            = Pattern.compile("^(?:\\s*ZBXD.)?.*esx\\.cpu\\.load\\[(.+),used\\]"             );        // :checks host cpu usage
 ```
-will be responsible for this item:
+Será responsável por este item:
 ```
 esx.cpu.load[{HOST.DNS},used]
 ```
-3. Scroll down to the next block of code in the same function starting with "String found;", add you own "found=" block:
+3. Role para baixo até o próximo bloco de código na mesma função começando com "String found;", adicione o seu próprio bloco "found =":
 ```
 found = checkPattern(pHostCpuUsed           ,string); if (found != null) { getHostCpuUsed           (found, out); return; }
 ```
-This one calls a function called "getHostCpuUsed" with {HOST.DNS} as an a first argument and a PrintWriter instance as a second one.
+Este chama uma função chamada "getHostCpuUsed" com {HOST.DNS} como um primeiro argumento e uma instância PrintWriter como um segundo.
 
-4. Your function should accept String and PrintWriter arguments. It should return values like that:
+4. Sua função deve aceitar argumentos String e PrintWriter. Ele deve retornar valores como esse:
 ```
 out.print(value);
 out.flush();
 ```
-5. Add a usage line to the methods() function :
+5. Adicione uma linha de uso à função methods ():
 ```
 static void methods() {
         System.err.print(
@@ -239,10 +240,10 @@ static void methods() {
           + "esx.cpu.load[name,used]                              \n"
 ```
 
-## Querying multiple vCenters
-At the moment, VmBix does not support multiple vCenters. If you still want to query multiple vCenters, you need to install VmBix on different Zabbix proxies, pointing to different vCenters. Then select the right proxy in each Zabbix host configuration page.
-- If you use Zabbix LLD to discover the VMWare environment, you will need to create multiple VmBix hosts, one for each proxy/VmBix installation.
-- If you use the Python [script](https://github.com/dav3860/vmbix/tree/master/zabbix/addons), you will have to edit its configuration file to assign a Zabbix proxy to the discovered hosts.
+## Consultando vários vCenters
+No momento, VmBix não suporta vários vCenters. Se você ainda quiser consultar vários vCenters, será necessário instalar o VmBix em diferentes proxies Zabbix, apontando para vCenters diferentes. Em seguida, selecione o proxy certo em cada página de configuração do host Zabbix.
+- Se você usar Zabbix LLD para descobrir o ambiente VMWare, você precisará criar vários hosts VmBix, um para cada instalação de proxy / VmBix.
+- Se você usar o Python [script](https://github.com/dav3860/vmbix/tree/master/zabbix/addons),você terá que editar o arquivo de configuração para atribuir um proxy Zabbix para os anfitriões descobertos.
 
 ## Version history
 See [CHANGELOG](https://github.com/dav3860/VmBix/blob/master/CHANGELOG.md)
