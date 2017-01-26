@@ -61,7 +61,18 @@ vm.counter[VM01,virtualDisk.totalReadLatency.average,scsi2:4,300]
 ## Instalação
 Obter a versão mais recente do servidor aqui . RPM & DEB pacotes são fornecidos.
 
-Você também vai precisar do Zabbix módulo carregável correspondente à sua versão zabbix. Veja https://github.com/dav3860/vmbix_zabbix_module para detalhes de instalação.
+### Debian
+#Instalar dependencias 
+apt-get install default-jre-headless java-common openjdk-7-jre-headless
+
+#Fazendo download do pacote
+cd /tmp
+wget https://bintray.com/dav3860/generic/download_file?file_path=2.6%2Fvmbix_2.6.0.156-1_amd64.deb
+mv file_path=2.6%2Fvmbix_2.6.0.156-1_amd64.deb  vmbix_2.6.0.156-1_amd64.deb
+dpkg -i vmbix_2.6.0.156-1_amd64.deb
+
+
+Você também vai precisar do Zabbix módulo carregável correspondente à sua versão zabbix. Veja https://github.com/mauroprojetos/vmbix_zabbix_module para detalhes de instalação.
 
 O servidor VmBix pode ser instalado na mesma máquina que um servidor ou proxy Zabbix. O módulo carregável deve ser instalado na máquina Zabbix que monitorará o ambiente VMWare.
 
